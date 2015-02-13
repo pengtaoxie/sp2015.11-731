@@ -9,7 +9,7 @@ for (nu, (de, en)) in enumerate(bitext):
 		for eni in en+["###"]:
 			jointdist[(dei,eni)] = 1.0
 # EM learning
-for it in range(0,6):
+for it in range(0,20):
 	sys.stderr.write("EM Iterations "+str(it)+"\n")
 	condi_en_de = defaultdict(int)
 	condi_en = defaultdict(int)
@@ -30,7 +30,7 @@ for it in range(0,6):
 				if condi_en[eni] > 0:
 					jointdist[(dei,eni)] = 1.0* condi_en_de[(eni,dei)] / condi_en[eni]
 #decoding
-outfile = open("output3.txt", "w")
+outfile = open("output_iters7.txt", "w")
 for (de, en) in bitext:
 	de_en = []
 	for (i, dei) in enumerate(de):
