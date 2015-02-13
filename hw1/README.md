@@ -1,3 +1,5 @@
+Using IBM Model1
+
 There are three Python programs here (`-h` for usage):
 
  - `./align` aligns words using Dice's coefficient.
