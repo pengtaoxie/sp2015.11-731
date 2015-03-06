@@ -1,3 +1,6 @@
+
+Used meteor metric to do the evaluation. The code is in myeval.py
+
 There are three Python programs here (`-h` for usage):
 
  - `./evaluate` evaluates pairs of MT output hypotheses relative to a reference translation using counts of matched words
