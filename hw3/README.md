@@ -1,3 +1,7 @@
+modified the provided decoder, to make it able to swap adjacent phrase pairs
+
+
+
 There are three Python programs here (`-h` for usage):
 
  - `./decode` a simple non-reordering (monotone) phrase-based decoder

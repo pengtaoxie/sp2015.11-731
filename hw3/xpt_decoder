@@ -20,14 +20,15 @@ sys.stderr.write('Decoding %s...\n' % (opts.input,))
 input_sents = [tuple(line.strip().split()) for line in open(opts.input).readlines()[:opts.num_sents]]
 
 
-def score_lm(translation,isEnd):
-    lm_score = 0.0
-    lm_state = lm.begin()
-    for word in ' '.join(translation).split():
-        (lm_state, word_logprob) = lm.score(lm_state, word)
-        lm_score += word_logprob
-    lm_score += lm.end(lm_state) if isEnd is True else 0.0
-    return lm_score,lm_state
+def lms(tsl,ed):
+    score = 0.0
+    state = lm.begin()
+    for w in ' '.join(tsl).split():
+        (state, ws) = lm.score(state, w)
+        score += ws
+    if ed:
+    	 score += lm.end(state) 
+    return score,state
     
     
 hypothesis = namedtuple('hypothesis', 'logprob, tm_score, lm_score, lm_state, translation')
@@ -49,16 +50,16 @@ for f in input_sents:
             for j in xrange(i+1,len(f)+1):
                 if f[i:j] in tm:
                     for phrase in tm[f[i:j]]:
-                        tm_score = h.tm_score + phrase.logprob
+                        ts = h.tm_score + phrase.logprob
                         for k in xrange( max(0, len(h.translation)-2), len(h.translation) +1):
-                            new_translation = h.translation[:k] + [phrase.english] + h.translation[k:]
+                            transnew = h.translation[:k] + [phrase.english] + h.translation[k:]
                             isEnd = False
                             if j==len(f):
                                 isEnd = True
-                            lm_score,lm_state = score_lm(new_translation, isEnd)
-                            new_hypothesis = hypothesis(tm_score + lm_score, tm_score, lm_score, lm_state, new_translation)
-                            if new_hypothesis.lm_state not in stacks[j] or stacks[j][new_hypothesis.lm_state].logprob < new_hypothesis.logprob: # second case is recombination
-                                stacks[j][new_hypothesis.lm_state] = new_hypothesis
+                            ls,state = lms(transnew, isEnd)
+                            hyponew = hypothesis(ts + ls, ts, ls, state, transnew)
+                            if hyponew.lm_state not in stacks[j] or stacks[j][hyponew.lm_state].logprob < hyponew.logprob: # second case is recombination
+                                stacks[j][hyponew.lm_state] = hyponew
     # find best translation by looking at the best scoring hypothesis
     # on the last stack
     winner = max(stacks[-1].itervalues(), key=lambda h: h.logprob)
