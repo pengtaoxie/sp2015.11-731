@@ -1,3 +1,9 @@
+I refered to Hao Zhang's method
+
+command
+1. ./train
+2. ./rerank | ./check | ./grade
+
 There are three Python programs here (`-h` for usage):
 
  - `./rerank` a simple reranker that simply sorts candidate translations on log p(czech|english)
