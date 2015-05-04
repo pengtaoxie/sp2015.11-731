@@ -1,8 +1,10 @@
 I refered to Hao Zhang's method
 
 command
-1. ./train
-2. ./rerank | ./check | ./grade
+ ./train
+
+
+ ./rerank | ./check | ./grade
 
 There are three Python programs here (`-h` for usage):
 
